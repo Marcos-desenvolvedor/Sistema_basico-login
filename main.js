@@ -10,6 +10,11 @@ const logins = [
   },
 ];
 
+const msgSenha = {
+  1: "DIGITE A SENHA NOVAMNETE",
+  2: "ERRAR NOVAMENTE CAUSARA NO BLOQUIO TEMPORARIO DA CONTA",
+};
+
 // CRIA e RETURN USER
 function CriarUserName() {
   let user = prompt("DIGITE SEU USER: ").trim();
@@ -51,21 +56,32 @@ function CriarLogin() {
 
 // Fazer Login e faz Verificações
 function FazerLogin() {
-  let userNameLogin = prompt("USUARIO: ").trim();
+  let userNameLogin = prompt("USER: ").trim();
   let userExiste = logins.find((u) => u.userName === userNameLogin);
 
   while (!userExiste) {
-    console.log("USER INVALIDO, DIGITE NOVAMENTE");
-    userNameLogin = prompt("USUARIO: ").trim();
+    console.log("USER INVÁLIDO, DIGITE NOVAMENTE");
+    userNameLogin = prompt("USER: ").trim();
     userExiste = logins.find((u) => u.userName === userNameLogin);
   }
 
-  let userPasswordLogin = prompt("SENHA: ");
+  let qtdaSenhaErrada = 0;
+  let maximoTentativas = 3;
 
-  while (userExiste.passaword != userPasswordLogin) {
-    console.log("SENHA INVÁLIDA, DIGITE NOVAMANTE");
-    userPasswordLogin = prompt("SENHA: ");
+  while (qtdaSenhaErrada < maximoTentativas) {
+    let userPasswordLogin = prompt("SENHA: ");
+    qtdaSenhaErrada++;
+
+    if (userExiste.passaword === userPasswordLogin) {
+      console.log("LOGIN REALIZADO"); // coloca aqui interface de login(em projeto)
+      return;
+    }
+
+    if (qtdaSenhaErrada < maximoTentativas) {
+      console.log(msgSenha[qtdaSenhaErrada]);
+    }
   }
+  console.log("CONTA BLOQUEADA");
 }
 
 console.log(logins);
